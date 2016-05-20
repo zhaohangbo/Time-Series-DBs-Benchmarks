@@ -71,15 +71,7 @@ parser.add_argument("--number-of-replicas",
 
 parser.add_argument("--number-of-metrics-per-bulk",
                     type=int, default=1000,
-                    help="Number of document per request (default 1000)")
-
-parser.add_argument("--max-fields-per-document",
-                    type=int, default=100,
-                    help="Max number of fields in each document (default 100)")
-
-parser.add_argument("--max-size-per-field",
-                    type=int, default=1000,
-                    help="Max content size per field (default 1000")
+                    help="Number of metric docs per bulk request (default 1000)")
 
 parser.add_argument("--cleanup",
                     default=False, action='store_true',
