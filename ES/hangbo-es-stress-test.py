@@ -4,6 +4,7 @@
 import argparse
 
 # Import threading essentials
+from itertools import cycle, islice
 from threading import Lock, Thread, Condition
 
 # For randomizing
@@ -42,7 +43,7 @@ parser = argparse.ArgumentParser()
 
 #es_address 10.10.10.10 indices 3 documents 10 clients 3 seconds 60
 
-# Adds all params
+### Mandatory Parameters
 parser.add_argument("number_of_clients",
                     type=int,
                     help="The number of threads to write from")
@@ -52,7 +53,7 @@ parser.add_argument("running_seconds",
                     help="The number of seconds to run")
 
 
-
+### Optional Parameters
 parser.add_argument("--es-hosts",
                     nargs='+',default=["10.10.10.10","10.10.10.11"],
                     help="The address of your cluster (no protocol or port), (default ['10.10.10.10','10.10.10.11'])")
@@ -85,15 +86,14 @@ parser.add_argument("--stats-interval",
 args = parser.parse_args()
 
 # Set variables from argparse output (for readability)
-ES_HOSTS    =                args.es_hosts
 NUMBER_OF_INDICES =          args.indices
 NUMBER_OF_CLIENTS =          args.number_of_clients
+
+ES_HOSTS    =                args.es_hosts
 RUNNING_SECONDS   =          args.running_seconds
 NUMBER_OF_SHARDS =           args.number_of_shards
 NUMBER_OF_REPLICAS =         args.number_of_replicas
 NUMBER_OF_METRICS_PER_BULK = args.number_of_metrics_per_bulk
-MAX_FIELDS_PER_DOCUMENT =    args.max_fields_per_document
-MAX_SIZE_PER_FIELD =         args.max_size_per_field
 CLEANUP =                 args.cleanup
 INTERVAL_BETWEEN_STATS =     args.stats_interval
 
@@ -215,19 +215,6 @@ def get_metric_by_type_name(type_name):
         return generate_float_metric()
     if(type_name=="boolean_metrics"):
         return generate_boolean_metric()
-
-# Create a document template
-# Generate doc with random numder of fields
-def generate_document():
-    temp_doc = {}
-    # Iterate over the max fields
-    # the loop variable '_' isn't actually used.
-    for _ in range(generate_random_int(MAX_FIELDS_PER_DOCUMENT)):
-        # Generate a field, with random content
-        temp_doc[generate_random_string(10)] = generate_random_string(MAX_SIZE_PER_FIELD)
-    # Return the created document
-    return temp_doc  # return {"tkyfb": "ggids", "bigun": "lmqtl", "ikvku": "whlgv", "qqbno": "tpake", "xptxx": "pgcjw"}
-
 
 def a_bulk():
     es = Elasticsearch()
@@ -366,6 +353,19 @@ def print_stats_worker():
             print_stats()
 
 
+def roundrobin(*iterables):
+    "roundrobin(['10.10','10.11'], ['10.12'], ['10.13']) --> A D E B F C"
+    # Recipe credited to George Sakkis
+    pending = len(iterables)
+    nexts = cycle(iter(it).next for it in iterables)
+    while pending:
+        try:
+            for next in nexts:
+                yield next()
+        except StopIteration:
+            pending -= 1
+            nexts = cycle(islice(nexts, pending))
+
 def main():
     # Define the globals
     global documents_templates
@@ -374,6 +374,7 @@ def main():
     global es
     try:
         # Initiate the elasticsearch session
+        print(host for host in ES_HOSTS)
         es = Elasticsearch(ES_HOSTS)
 
     except:
@@ -425,14 +426,15 @@ def main():
         print("Done!\n")
 
 
-# Main runner
-try:
-    main()
+if __name__ == "__main__":
+    # Main runner
+    try:
+        main()
 
-except Exception as e:
-    print("Got unexpected exception. probably a bug, please report it.")
-    print("")
-    print(e.message)
-    traceback.print_exc()
+    except Exception as e:
+        print("Got unexpected exception. probably a bug, please report it.")
+        print("")
+        print(e.message)
+        traceback.print_exc()
 
-    sys.exit(1)
+        sys.exit(1)
