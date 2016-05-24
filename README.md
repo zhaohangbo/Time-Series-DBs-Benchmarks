@@ -10,8 +10,9 @@
 
 Example:
 
-`cd ES/`
-`./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
+Go to ES Directory: `cd ES/`
+
+Run: `./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
 
 ```
 In this case, we do es_metrics_benchmark with the following parameters:
@@ -39,7 +40,7 @@ Run `./es_metrics_benchmark.py -h`
 | `running_seconds` | How long should the test run. Note: it might take a bit longer, as sending of all bulks who's creation has been initiated is allowed |
 
 #### Optional Parameters (ElasticSearch)
-| Parameter | Description |
+| Parameter       | Description |
 | --- | --- |
 | `--es-hosts`       | A list of IPs in the Elasticsearch cluster (no protocol and port, use default) |
 | `--indices`       | Number of indices to write to (default 8) |
@@ -57,27 +58,58 @@ Obiviously, it’s the physical size of the bulk that is more important than the
 
 Step 1. Size Per Bulk
 ```
-   The physical size of the bulk that is more important than the document count.
-   Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
-   By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
+The physical size of the bulk that is more important than the document count.
+Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
+By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
 ```
 
 Step 2. Concurrency
 ```
-   Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
-   Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
+Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
+Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
 ```
 
-Step 3. Round-Robin
+Step 3. View `report.txt` and find where `number of Failed bulks > 0`
+
 ```
-   By default round-robin strategy is used by the ES-PY Api for load balancing.
+Clients number: 1
+Elapsed time: 62 seconds
+Successful bulks: 10 (600000 documents)
+Failed bulks: 0 (0 documents)
+Indexed approximately 77 MBs in 62 secconds
+7.70 MB/bulk
+1.24 MB/s
+
+Clients number: 2
+Elapsed time: 31 seconds
+Successful bulks: 17 (1020000 documents)
+Failed bulks: 0 (0 documents)
+Indexed approximately 131 MBs in 31 secconds
+7.71 MB/bulk
+4.23 MB/s
+
+----------------------------
+Test is done! Final results:
+----------------------------
+Clients number: 2
+Elapsed time: 67 seconds
+Successful bulks: 25 (1500000 documents)
+Failed bulks: 0 (0 documents)
+Indexed approximately 192 MBs in 67 secconds
+7.68 MB/bulk
+2.87 MB/s
 ```
 
-Step 4. Marvel Plugin & EsRejectedExecutionException
+Step 4. Round-Robin
 ```
-   Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
-   If you start to receive EsRejectedExecutionException,
-   Then your cluster is at-capacity with some resource and you need to reduce concurrency
+By default round-robin strategy is used by the ES-PY Api for load balancing.
+```
+
+Step 5. Marvel Plugin & EsRejectedExecutionException
+```
+Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
+If you start to receive EsRejectedExecutionException,
+Then your cluster is at-capacity with some resource and you need to reduce concurrency
 ```
 
 
