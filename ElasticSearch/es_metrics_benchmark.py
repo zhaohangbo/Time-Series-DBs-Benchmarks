@@ -64,7 +64,7 @@ parser.add_argument("--es-hosts",
                     nargs='+', default=["10.10.10.10", "10.10.10.11"],
                     help="The address of your cluster (no protocol or port), (default ['10.10.10.10','10.10.10.11'])")
 
-parser.add_argument("--indices",
+parser.add_argument("--number-of-indices",
                     type=int, default=8,
                     help="The number of indices to write to (default 8)")
 
@@ -104,7 +104,7 @@ MAX_NUM_OF_CLIENTS = args.max_num_of_clients
 RUNNING_SECONDS   =          args.running_seconds
 
 ES_HOSTS    =                args.es_hosts
-NUMBER_OF_INDICES =          args.indices
+NUMBER_OF_INDICES =          args.number_of_indices
 NUMBER_OF_SHARDS =           args.number_of_shards
 NUMBER_OF_REPLICAS =         args.number_of_replicas
 REFRESH_INTERVAL   =         args.refresh_interval
@@ -143,7 +143,7 @@ settings_body = {"settings":
                      {
                          "number_of_shards":   NUMBER_OF_SHARDS,
                          "number_of_replicas": NUMBER_OF_REPLICAS,
-                         "index" : {
+                         "index": {
                             "refresh_interval": str(REFRESH_INTERVAL)+"s"
                          }
                      }
