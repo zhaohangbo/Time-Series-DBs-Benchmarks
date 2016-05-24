@@ -46,7 +46,7 @@ Run `./es_metrics_benchmark.py -h`
 | `--indices`       | Number of indices to write to (default 8) |
 | `--number-of-shards`       | How many shards per index (default 3) |
 | `--number-of-replicas`       | How many replicas per index (default 1) |
-| `--number-of-metrics-per-bulk` | How many metric docs each bulk request should contain (default 1000)|
+| `--number-of-metrics-per-bulk` | How many metric docs each bulk request should contain (default 600000)|
 | `--cleanup`       | Boolean field. If Delete the indices after completion(default False) |
 | `--stats-interval`       | Number of seconds to wait between stats prints (default 30), How frequent to show the statistics |
 
@@ -57,20 +57,113 @@ We use bulk indexing requests for optimal performance.
 
 Obiviously, it’s the physical size of the bulk that is more important than the document count.
 
-Step 1. Size Per Bulk
+Step 1. Create N Indices and 7 Types within each index
+```
+Create N(input para) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
+settings_body = {"settings":
+                     {
+                         "number_of_shards":   NUMBER_OF_SHARDS,
+                         "number_of_replicas": NUMBER_OF_REPLICAS,
+                         "index": {"refresh_interval": str(REFRESH_INTERVAL)+"s"}
+                     }
+                 }
+
+Within each index, there are 7 types, which represent 7 types of metrics. Types are as following:
+types = ["long_metrics",
+         "integer_metrics",
+         "short_metrics",
+         "byte_metrics",
+         "double_metrics",
+         "float_metrics",
+         "boolean_metrics"]
+
+The mapping for each index with 7 metric typs is as following:
+mappings_body = {
+        "_default_": {
+              "dynamic_templates": [
+                    {
+                      "strings": {
+                        "match": "*",
+                        "match_mapping_type": "string",
+                        "mapping":   { "type": "string",  "doc_values": True, "index": "not_analyzed" }
+                      }
+                    }
+                ],
+                "_all":            { "enabled": True},
+                "_source":         { "enabled": True},
+                "properties": {
+                    "@timestamp":  { "type": "date",    "doc_values": True}
+                }
+        },
+        "long_metrics": {
+              "properties": {
+                "long_value":    { "type": "long",    "doc_values": True}
+              }
+        },
+        "integer_metrics": {
+              "properties": {
+                "integer_value": { "type": "integer", "doc_values": True}
+              }
+        },
+        "short_metrics": {
+              "properties": {
+                "short_value":   { "type": "short",   "doc_values": True}
+              }
+        },
+        "byte_metrics": {
+              "properties": {
+                "byte_value":    { "type": "byte",    "doc_values": True}
+              }
+        },
+        "double_metrics": {
+              "properties": {
+                "double_value":  { "type": "double",  "doc_values": True}
+              }
+        },
+        "float_metrics": {
+              "properties": {
+                "float_value":   { "type": "float",   "doc_values": True}
+              }
+        },
+        "boolean_metrics": {
+              "properties": {
+                "boolean_value": { "type": "boolean", "doc_values": True}
+              }
+        }
+}
+```
+
+Step 3. Generate Metrics Pool
+```
+Generate Metrics Pool as following, in each type, there are 20 different metrics
+metrics_pool_dict = {
+        'long_metrics':    [],
+        'integer_metrics': [],
+        'short_metrics':   [],
+        'byte_metrics':    [],
+        'double_metrics':  [],
+        'float_metrics':   [],
+        'boolean_metrics': []
+        }
+
+When forming a bulk, we randomly pick one metric from this metrics_pool, as following:
+cur_bulk += "{0}\n".format(json.dumps( choice(metrics_pool_dict[type_name])) )
+```
+
+Step 4. Set the Size of Per Bulk
 ```
 The physical size of the bulk that is more important than the document count.
 Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
 By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
 ```
 
-Step 2. Concurrency
+Step 5. Concurrency
 ```
-Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
 Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
+Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
 ```
 
-Step 3. View `report.txt` and find where `number of Failed bulks > 0`
+Step 6. View `report.txt` and find where `number of Failed bulks > 0`
 
 ```
 Clients number: 1
@@ -101,12 +194,12 @@ Indexed approximately 192 MBs in 67 secconds
 2.87 MB/s
 ```
 
-Step 4. Round-Robin
+Step 7. Round-Robin
 ```
 By default round-robin strategy is used by the ES-PY Api for load balancing.
 ```
 
-Step 5. Marvel Plugin & EsRejectedExecutionException
+Step 8. Marvel Plugin & EsRejectedExecutionException
 ```
 Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
 If you start to receive EsRejectedExecutionException,
