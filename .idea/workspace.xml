@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="47003342-1636-445c-865a-08a354e5d144" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ES/benchmark_helper.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ES/cases.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ES/es_metrics_benchmark.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ES/metrics_generator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/panda_test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/put-mapping-test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/test.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ES/Es-Py-Api-Helper-Bulk.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ES/elasticsearch-stress-test.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ES/es_utils.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Test/load.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Test/my-test.py" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/ES/hangbo-es-stress-test.py" afterPath="$PROJECT_DIR$/Test/put-setting-test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ES/README.md" afterPath="$PROJECT_DIR$/ES/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="47003342-1636-445c-865a-08a354e5d144" name="Default" comment="" />
     <ignored path="Time-Series-DBs-Benchmarks.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
