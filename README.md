@@ -9,19 +9,23 @@
 ### Benchmark ElasticSearch
 
 Example:
+
 `./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
 
+```
 In this case, we do es_metrics_benchmark with the following parameters:
-`min_num_of_clients = 1`
-`max_num_of_clients = 2`
-`running_seconds = 60`
-`number-of-metrics-per-bulk = 60000`
-
+min_num_of_clients = 1,
+max_num_of_clients = 2,
+running_seconds = 60,
+number-of-metrics-per-bulk = 60000,
+which means,
 Range the number of clients from 1(min_num_of_clients) to 2(max_num_of_clients);
 Use number-of-metrics-per-bulk = 60000, which can ensure the physical size of the bulk is about 6-8 MB;
 Set the running_seconds for each benchmark case with a certain thread number(num_of_clients).
+```
 
 To see all `Mandatory Parameters` and `Optional Parameters`:
+
 Run `./es_metrics_benchmark.py -h`
 
 
@@ -35,13 +39,13 @@ Run `./es_metrics_benchmark.py -h`
 ### Optional Parameters
 | Parameter | Description |
 | --- | --- |
-| `--es-hosts` | A list of IPs in the Elasticsearch cluster (no protocol and port, use default) |
-| `--indices` | Number of indices to write to (default 8) |
-| `--number-of-shards` | How many shards per index (default 3) |
-| `--number-of-replicas` | How many replicas per index (default 1) |
+| `--es-hosts`    | A list of IPs in the Elasticsearch cluster (no protocol and port, use default) |
+| `--indices`    | Number of indices to write to (default 8) |
+| `--number-of-shards`    | How many shards per index (default 3) |
+| `--number-of-replicas`    | How many replicas per index (default 1) |
 | `--number-of-metrics-per-bulk` | How many metric docs each bulk request should contain (default 1000)|
-| `--cleanup` | Boolean field. If Delete the indices after completion(default False) |
-| `--stats-interval` | Number of seconds to wait between stats prints (default 30), How frequent to show the statistics |
+| `--cleanup`    | Boolean field. If Delete the indices after completion(default False) |
+| `--stats-interval`    | Number of seconds to wait between stats prints (default 30), How frequent to show the statistics |
 
 
 ### Idea
