@@ -53,9 +53,8 @@ Run `./es_metrics_benchmark.py -h` to see all `Mandatory Parameters` and `Option
 
 #### Idea (ElasticSearch Benchmark)
 
-Step 1. Create N Indices and 7 Types within each index
+1. Create N(number-of-indices) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
 ```
-Create N(--number-of-indices) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
 settings_body = {"settings":
                      {
                          "number_of_shards":   NUMBER_OF_SHARDS,
@@ -63,8 +62,10 @@ settings_body = {"settings":
                          "index": {"refresh_interval": str(REFRESH_INTERVAL)+"s"}
                      }
                  }
+```
 
-Within each index, there are 7 types, which represent 7 types of metrics. Types are as following:
+2. Within each index, there are 7 metric types
+```
 types = ["long_metrics",
          "integer_metrics",
          "short_metrics",
@@ -72,8 +73,10 @@ types = ["long_metrics",
          "double_metrics",
          "float_metrics",
          "boolean_metrics"]
+```
 
-The mapping for each index with 7 metric typs is as following:
+3. Put the mapping for each index with 7 metric typs
+```
 mappings_body = {
         "_default_": {
               "dynamic_templates": [
@@ -129,11 +132,11 @@ mappings_body = {
 }
 ```
 
-Step 3. Generate Metrics Pool
+4. Generate Metrics_Pool in memory with 7 different metric types
+
 ```
-Generate Metrics Pool as following, in each type, there are 20 different metrics
 metrics_pool_dict = {
-        'long_metrics':    [],
+        'long_metrics':    [],  # list.length = 20
         'integer_metrics': [],
         'short_metrics':   [],
         'byte_metrics':    [],
@@ -146,20 +149,20 @@ When forming a bulk, we randomly pick one metric from this metrics_pool, as foll
 cur_bulk += "{0}\n".format(json.dumps( choice(metrics_pool_dict[type_name])) )
 ```
 
-Step 4. Set the Size of Per Bulk
+5. Set the Size of Per Bulk
 ```
 The physical size of the bulk that is more important than the document count.
 Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
 By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
 ```
 
-Step 5. Concurrency
+6. Concurrency
 ```
 Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
 Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
 ```
 
-Step 6. View `report.txt` and find where `number of Failed bulks > 0`
+7. View `report.txt` and find where `number of Failed bulks > 0`
 
 ```
 Clients number: 1
@@ -190,12 +193,12 @@ Indexed approximately 192 MBs in 67 secconds
 2.87 MB/s
 ```
 
-Step 7. Round-Robin
+8. Round-Robin
 ```
 By default round-robin strategy is used by the ES-PY Api for load balancing.
 ```
 
-Step 8. Marvel Plugin & EsRejectedExecutionException
+9. Marvel Plugin & EsRejectedExecutionException
 ```
 Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
 If you start to receive EsRejectedExecutionException,
