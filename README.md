@@ -10,6 +10,7 @@
 
 Example:
 
+`cd ES/`
 `./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
 
 ```
@@ -54,28 +55,27 @@ Run `./es_metrics_benchmark.py -h`
 We use bulk indexing requests for optimal performance.
 Obiviously, it’s the physical size of the bulk that is more important than the document count.
 
-1. Size Per Bulk
-
+Step 1. Size Per Bulk
 ```
    The physical size of the bulk that is more important than the document count.
-   So start with a bulk size around 5-15 MB and slowly increase it until you do not see performance gains any more.
+   Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
    By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
 ```
 
-2. Concurrency
+Step 2. Concurrency
 ```
    Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
    Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
 ```
 
-3. Round-Robin
+Step 3. Round-Robin
 ```
    By default round-robin strategy is used by the ES-PY Api for load balancing.
 ```
 
-4. Marvel Plugin & EsRejectedExecutionException
+Step 4. Marvel Plugin & EsRejectedExecutionException
 ```
-   Monitor your nodes with Marvel and/or tools like isolate, top, and ps to see when resources start to bottleneck.
+   Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
    If you start to receive EsRejectedExecutionException,
    Then your cluster is at-capacity with some resource and you need to reduce concurrency
 ```
