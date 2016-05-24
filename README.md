@@ -53,7 +53,7 @@ Run `./es_metrics_benchmark.py -h` to see all `Mandatory Parameters` and `Option
 
 #### Idea (ElasticSearch Benchmark)
 
-1. Create N(number-of-indices) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
+Step 1. Create N(number-of-indices) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
 ```
 settings_body = {"settings":
                      {
@@ -64,7 +64,7 @@ settings_body = {"settings":
                  }
 ```
 
-2. Within each index, there are 7 metric types
+Step 2. Within each index, there are 7 metric types
 ```
 types = ["long_metrics",
          "integer_metrics",
@@ -75,7 +75,7 @@ types = ["long_metrics",
          "boolean_metrics"]
 ```
 
-3. Put the mapping for each index with 7 metric typs
+Step 3. Put the mapping for each index with 7 metric typs
 ```
 mappings_body = {
         "_default_": {
@@ -132,7 +132,7 @@ mappings_body = {
 }
 ```
 
-4. Generate Metrics_Pool in memory with 7 different metric types
+Step 4. Generate Metrics_Pool in memory with 7 different metric types
 
 ```
 metrics_pool_dict = {
@@ -149,20 +149,20 @@ When forming a bulk, we randomly pick one metric from this metrics_pool, as foll
 cur_bulk += "{0}\n".format(json.dumps( choice(metrics_pool_dict[type_name])) )
 ```
 
-5. Set the Size of Per Bulk
+Step 5. Set the Size of Per Bulk
 ```
 The physical size of the bulk that is more important than the document count.
 Start with a bulk size around 5-15 MB and slowly increase it until no performance gains any more.
 By default, `--number-of-metrics-per-bulk = 60000, at which the physical size per Bulk is 6-8 MB`
 ```
 
-6. Concurrency
+Step 6. Concurrency
 ```
 Use `min_num_of_clients` and `max_num_of_clients` parameters to define the range of thread number.
 Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
 ```
 
-7. View `report.txt` and find where `number of Failed bulks > 0`
+Step 7. View `report.txt` and find where `number of Failed bulks > 0`
 
 ```
 Clients number: 1
@@ -193,12 +193,12 @@ Indexed approximately 192 MBs in 67 secconds
 2.87 MB/s
 ```
 
-8. Round-Robin
+Step 8. Round-Robin
 ```
 By default round-robin strategy is used by the ES-PY Api for load balancing.
 ```
 
-9. Marvel Plugin & EsRejectedExecutionException
+Step 9. Marvel Plugin & EsRejectedExecutionException
 ```
 Monitor your nodes with Marvel or tools like isolate, top, and ps to see the bottleneck of resources.
 If you start to receive EsRejectedExecutionException,
