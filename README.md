@@ -8,12 +8,15 @@
 
 ## Benchmark ElasticSearch
 
-Example:
+#### Example:
 
-Run: `cd ES/`
+Run: 
+```
+cd ES/
+./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000
+```
 
-Run: `./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
-
+Explain:
 ```
 In this case, we do es_metrics_benchmark with the following parameters:
 min_num_of_clients = 1,
@@ -27,10 +30,7 @@ Use number-of-metrics-per-bulk = 60000, which can ensure the physical size of th
 Set the running_seconds for each benchmark case with a certain thread number(num_of_clients).
 ```
 
-To see all `Mandatory Parameters` and `Optional Parameters`:
-
-Run `./es_metrics_benchmark.py -h`
-
+Run `./es_metrics_benchmark.py -h` to see all `Mandatory Parameters` and `Optional Parameters`:
 
 #### Mandatory Parameters (ElasticSearch)
 | Parameter | Description |
@@ -43,7 +43,7 @@ Run `./es_metrics_benchmark.py -h`
 | Parameter       | Description |
 | --- | --- |
 | `--es-hosts`       | A list of IPs in the Elasticsearch cluster (no protocol and port, use default) |
-| `--indices`       | Number of indices to write to (default 8) |
+| `--number-of-indices`       | Number of indices to write to (default 8) |
 | `--number-of-shards`       | How many shards per index (default 3) |
 | `--number-of-replicas`       | How many replicas per index (default 1) |
 | `--number-of-metrics-per-bulk` | How many metric docs each bulk request should contain (default 600000)|
@@ -53,13 +53,9 @@ Run `./es_metrics_benchmark.py -h`
 
 #### Idea (ElasticSearch Benchmark)
 
-We use bulk indexing requests for optimal performance.
-
-Obiviously, it’s the physical size of the bulk that is more important than the document count.
-
 Step 1. Create N Indices and 7 Types within each index
 ```
-Create N(input para) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
+Create N(--number-of-indices) indices with the certain NUMBER_OF_SHARDS and NUMBER_OF_REPLICAS
 settings_body = {"settings":
                      {
                          "number_of_shards":   NUMBER_OF_SHARDS,
