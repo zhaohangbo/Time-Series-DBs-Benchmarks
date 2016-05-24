@@ -7,24 +7,44 @@ import subprocess
 # Set a parser object
 parser = argparse.ArgumentParser()
 ### Mandatory Parameters
-parser.add_argument("--clients_min",
+parser.add_argument("clients_min",
                     type=int, default=1,
                     help="The minum of CLIENTS")
 
-parser.add_argument("--clients_max",
+parser.add_argument("clients_max",
                     type=int, default=2,
                     help="The maxmun of CLIENTS")
 
+### Optional Parameters
 parser.add_argument("--running_seconds",
                     type=int, default=60,
                     help="The running_seconds of per benchmark")
+
+
 
 # Parse the arguments
 args = parser.parse_args()
 CLIENTS_MIN = args.clients_min
 CLIENTS_MAX = args.clients_max
 RUNNING_SECONDS = args.running_seconds
+
+NUMBER_OF_CLIENTS =          args.number_of_clients
+RUNNING_SECONDS   =          args.running_seconds
+
+ES_HOSTS    =                args.es_hosts
+NUMBER_OF_INDICES =          args.indices
+NUMBER_OF_SHARDS =           args.number_of_shards
+NUMBER_OF_REPLICAS =         args.number_of_replicas
+REFRESH_INTERVAL   =         args.refresh_interval
+NUMBER_OF_METRICS_PER_BULK = args.number_of_metrics_per_bulk
+CLEANUP =                    args.cleanup
+INTERVAL_BETWEEN_STATS =     args.stats_interval
+
+
 cmd = None
+
+
+
 
 # Set variables from argparse output (for readability)
 number_of_clients = None

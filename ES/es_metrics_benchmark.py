@@ -43,9 +43,17 @@ except:
 parser = argparse.ArgumentParser()
 
 ### Mandatory Parameters
-parser.add_argument("number_of_clients",
-                    type=int,
-                    help="The number of threads to write from")
+parser.add_argument("min_num_of_clients",
+                    type=int, default=1,
+                    help="The minimum number of client threads")
+
+parser.add_argument("max_num_of_clients",
+                    type=int, default=2,
+                    help="The maximum number of client threads")
+
+# parser.add_argument("number_of_clients",
+#                     type=int,
+#                     help="The number of threads to write from")
 
 parser.add_argument("running_seconds",
                     type=int,
@@ -90,7 +98,9 @@ parser.add_argument("--stats-interval",
 args = parser.parse_args()
 
 # Set variables from argparse output (for readability)
-NUMBER_OF_CLIENTS =          args.number_of_clients
+MIN_NUM_OF_CLIENTS = args.min_num_of_clients
+MAX_NUM_OF_CLIENTS = args.max_num_of_clients
+# NUMBER_OF_CLIENTS =          args.number_of_clients
 RUNNING_SECONDS   =          args.running_seconds
 
 ES_HOSTS    =                args.es_hosts
@@ -102,10 +112,8 @@ NUMBER_OF_METRICS_PER_BULK = args.number_of_metrics_per_bulk
 CLEANUP =                    args.cleanup
 INTERVAL_BETWEEN_STATS =     args.stats_interval
 
-
 # Constant
 SYS_MAXINT = sys.maxint
-
 
 metrics_pool_dict = {
         'long_metrics':    [],
@@ -234,11 +242,11 @@ def bulk_metrics_worker():
             print(e.message)
             traceback.print_exc()
 
-def generate_clients():
+def generate_clients(num_of_clients):
     # Clients placeholder
     list_clients = []
     # Iterate over the clients count
-    for _ in range(NUMBER_OF_CLIENTS):
+    for _ in range(num_of_clients):
         a_client_thread = Thread(target=bulk_metrics_worker)
         a_client_thread.daemon = True
         # Create a thread and push it to the list
@@ -281,8 +289,19 @@ def cleanup_indices():
             print("Could not delete index: {0}. Continue anyway..".format(cur_index))
 
 
+def check_paras():
+    global MIN_NUM_OF_CLIENTS
+    global MAX_NUM_OF_CLIENTS
+    global RUNNING_SECONDS
+    if MIN_NUM_OF_CLIENTS < 0:
+        MIN_NUM_OF_CLIENTS = 1
+    if MAX_NUM_OF_CLIENTS < 0 or MAX_NUM_OF_CLIENTS < 1:
+        MAX_NUM_OF_CLIENTS = MIN_NUM_OF_CLIENTS + 1
+    if RUNNING_SECONDS < 0:
+        RUNNING_SECONDS = 60
 
-def main():
+
+def test_case_of_n_clients(num_of_clients):
     # Define the globals
     global indices
     global es
@@ -305,7 +324,7 @@ def main():
     metrics_pool_dict = fill_metrics_pool(**metrics_pool_dict)
 
     print("Generating  clients.. "),
-    clients = generate_clients()
+    clients = generate_clients(num_of_clients)
     print("Done!\n")
 
     print("Creating indices.. "),
@@ -326,7 +345,7 @@ def main():
     map(lambda thread: thread.start(), clients)
 
     # Create and start the print stats thread
-    stats_thread = Thread(target=print_stats_worker(NUMBER_OF_CLIENTS))
+    stats_thread = Thread(target=print_stats_worker(num_of_clients))
     stats_thread.daemon = True
     stats_thread.start()
 
@@ -337,7 +356,7 @@ def main():
 
     # Record final results into report.txt file
     is_final_result = True
-    print_stats(NUMBER_OF_CLIENTS, is_final_result)
+    print_stats(num_of_clients, is_final_result)
 
     # We will Clean up the indices by default
     # Default: True
@@ -345,6 +364,14 @@ def main():
         print("Cleaning up created indices.. "),
         cleanup_indices()
         print("Done!\n\n\n\n")
+
+
+def main():
+    check_paras()
+    for number_of_clients in range(MIN_NUM_OF_CLIENTS, MAX_NUM_OF_CLIENTS+1):  # 1 client to 100 clients
+        test_case_of_n_clients(number_of_clients)
+        time.sleep(RUNNING_SECONDS+15)
+    sys.exit(-1)
 
 
 if __name__ == "__main__":
@@ -357,5 +384,4 @@ if __name__ == "__main__":
         print("")
         print(e.message)
         traceback.print_exc()
-
         sys.exit(1)

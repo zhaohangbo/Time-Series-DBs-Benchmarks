@@ -42,7 +42,7 @@ so it’s the physical size of the bulk that is more important than the document
 2. Concurrency
    Then start increasing the concurrency of your bulk ingestion (multiple threads, etc)
 
-3. Marvel & EsRejectedExecutionException~~~
+3. Marvel & EsRejectedExecutionException
    Monitor your nodes with Marvel and/or tools like isolate, top, and ps to see when resources start to bottleneck.
    If you start to receive EsRejectedExecutionException,
    Then your cluster is at-capacity with some resource and you need to reduce concurrency
@@ -51,7 +51,7 @@ so it’s the physical size of the bulk that is more important than the document
    When ingesting data, make sure bulk requests are round-robined actress all your data nodes.
    Do not send all requests to s single node, since that single node will need to store all the bulks in memory while processing
 
-   By default round-robin strategy is used by the ES-PY for load balancing.
+   By default round-robin strategy is used by the ES-PY Api for load balancing.
    https://elasticsearch-py.readthedocs.io/en/master/connection.html#elasticsearch.ConnectionPool
 ```
 
