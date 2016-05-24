@@ -46,3 +46,15 @@ Successful bulks: 25 (1500000 documents
 2.87 MB/s 
 
 
+----------------------------
+Test is done! Final results:
+----------------------------
+Clients number: 1  
+Elapsed time: 63 seconds 
+Successful bulks: 11 (660000 documents 
+)Failed bulks: 0 (0 documents 
+)Indexed approximately 84 MBs in 63 secconds 
+7.64 MB/bulk 
+1.33 MB/s 
+
+
