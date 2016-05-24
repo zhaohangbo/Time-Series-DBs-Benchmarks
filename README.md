@@ -10,7 +10,7 @@
 
 Example:
 
-Go to ES Directory: `cd ES/`
+Run: `cd ES/`
 
 Run: `./es_metrics_benchmark.py 1 2 60 --number-of-metrics-per-bulk 60000`
 
@@ -54,6 +54,7 @@ Run `./es_metrics_benchmark.py -h`
 #### Idea (ElasticSearch Benchmark)
 
 We use bulk indexing requests for optimal performance.
+
 Obiviously, it’s the physical size of the bulk that is more important than the document count.
 
 Step 1. Size Per Bulk
