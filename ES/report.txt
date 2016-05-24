@@ -1,0 +1,36 @@
+----------------------------
+Test is done! Final results:
+----------------------------
+Clients number: 1  
+Elapsed time: 123 seconds 
+Successful bulks: 20 (1200000 documents 
+)Failed bulks: 0 (0 documents 
+)Indexed approximately 154 MBs in 123 secconds 
+7.70 MB/bulk 
+1.25 MB/s 
+
+
+----------------------------
+Test is done! Final results:
+----------------------------
+Clients number: 2  
+Elapsed time: 125 seconds 
+Successful bulks: 27 (1620000 documents 
+)Failed bulks: 0 (0 documents 
+)Indexed approximately 208 MBs in 125 secconds 
+7.70 MB/bulk 
+1.66 MB/s 
+
+
+----------------------------
+Test is done! Final results:
+----------------------------
+Clients number: 3  
+Elapsed time: 135 seconds 
+Successful bulks: 26 (1560000 documents 
+)Failed bulks: 0 (0 documents 
+)Indexed approximately 200 MBs in 135 secconds 
+7.69 MB/bulk 
+1.48 MB/s 
+
+
