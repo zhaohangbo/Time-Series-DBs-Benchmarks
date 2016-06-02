@@ -1,15 +1,7 @@
 
-InfluxDB Installation
-https://docs.influxdata.com/influxdb/v0.8/introduction/installation/
+InfluxDB Version: v0.8.8
 
-
-Collectd and InfluxDB Config
-https://anomaly.io/collectd-metrics-to-influxdb/
-
-Version:InfluxDB v0.8.8
-Host_port:10.10.10.12:8083
-
-
+InfluxDB Host and Port: 10.10.10.12:8083
 
 Configure Grafana 1.9.1
 
@@ -32,6 +24,11 @@ vim config.js
       },
 ```
 
+InfluxDB Installation
+https://docs.influxdata.com/influxdb/v0.8/introduction/installation/
+
+Collectd and InfluxDB Config
+https://anomaly.io/collectd-metrics-to-influxdb/
 
 
 # Time Series DBs Stress Test
@@ -100,8 +97,6 @@ Step 2. Run multiple clients and do batch writes
 Step 3. Drop Database
 
 Step 4. View your stress test report with a certain thread number range
-
-
 
 
 ## Contribution
