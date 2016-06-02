@@ -3,3 +3,6 @@
 *.pyc
 ElasticSearch/*.pyc
 ElasticSearch/report.txt
+
+InfluxDB_v8/*.pyc
+InfluxDB_v8/report.txt
