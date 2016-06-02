@@ -13,6 +13,7 @@ Host_port:10.10.10.12:8083
 
 Configure Grafana 1.9.1
 
+```
 vim config.js
       datasources: {
         influxdb: {
@@ -29,7 +30,7 @@ vim config.js
           grafanaDB: true
         },
       },
-
+```
 
 
 
