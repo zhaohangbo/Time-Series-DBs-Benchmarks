@@ -8,7 +8,7 @@
 
 ## Benchmark ElasticSearch
 
-#### Example:
+#### Example(ElasticSearch Benchmark)
 
 Run: 
 ```
@@ -33,14 +33,14 @@ Set the running_seconds for each benchmark case with a certain thread number(num
 
 Run `./es_metrics_benchmark.py -h` to see all `Mandatory Parameters` and `Optional Parameters`:
 
-#### Mandatory Parameters (ElasticSearch)
+#### Mandatory Parameters (ElasticSearch Benchmark)
 | Parameter | Description |
 | --- | --- |
 | `min_num_of_clients` | The minimum number of threads that send bulks to ES(threads num will range from min_client_num to max_client_num) |
 | `max_num_of_clients` | The maximum number of threads that send bulks to ES(threads num will range from min_client_num to max_client_num) |
 | `running_seconds` | How long should the test run. Note: it might take a bit longer, cause current batch operation needs time to complete |
 
-#### Optional Parameters (ElasticSearch)
+#### Optional Parameters (ElasticSearch Benchmark)
 | Parameter       | Description |
 | --- | --- |
 | `--es-hosts`       | A list of IPs in the Elasticsearch cluster (no protocol and port, use default) |
@@ -211,13 +211,13 @@ Then your cluster is at-capacity with some resource and you need to reduce concu
 
 This benchmark is targeted at the InfluxDB v0.8.8, which is compatible with Grafana 1.9.1
 
-### Install or upgrade python client for InfluxDB
+### Install or upgrade python client(InfluxDB v0.8 Benchmark)
 ```
 $ sudo pip install influxdb
 $ sudo pip install --upgrade influxdb
 ```
 
-#### Example:
+#### Example(InfluxDB v0.8 Benchmark)
 
 Run:
 ```
@@ -243,7 +243,7 @@ See what performance we will get.
 
 Run `./influx_singlenode_benchmark.py -h` to see all the `Optional Parameters`:
 
-#### Optional Parameters (InfluxDB v0.8)
+#### Optional Parameters (InfluxDB v0.8 Benchmark)
 | Parameter           | Description |
 | ---- | ---- |
 |  `--host`           | Hostname influxdb http API (default, localhost) |
@@ -255,7 +255,7 @@ Run `./influx_singlenode_benchmark.py -h` to see all the `Optional Parameters`:
 |  `--stats-interval`         | Number of seconds to wait between stats prints (default 30s), How frequent to show the statistics |
 
 
-#### Idea (InfluxDB Benchmark)
+#### Idea (InfluxDB v0.8 Benchmark)
 
 Step 1. Greate Database
 
