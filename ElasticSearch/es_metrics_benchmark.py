@@ -24,10 +24,12 @@ import sys
 import json
 import traceback
 
-import benchmark_helper
-from benchmark_helper import increment_success, increment_failure, increment_size, has_timeout
-from benchmark_helper import print_stats, print_stats_worker
-from metrics_generator import fill_metrics_pool
+import es_benchmark_helper
+from es_benchmark_helper import increment_success, increment_failure, increment_size, has_timeout
+from es_benchmark_helper import print_stats, print_stats_worker
+
+import es_metrics_generator
+from es_metrics_generator import fill_metrics_pool, fill_bulks_pool
 
 # Try and import Elasticsearch
 try:
@@ -108,12 +110,12 @@ NUMBER_OF_INDICES =          args.number_of_indices
 NUMBER_OF_SHARDS =           args.number_of_shards
 NUMBER_OF_REPLICAS =         args.number_of_replicas
 REFRESH_INTERVAL   =         args.refresh_interval
-NUMBER_OF_METRICS_PER_BULK = args.number_of_metrics_per_bulk
+NUMBER_OF_METRICS_PER_BATCH = args.number_of_metrics_per_bulk
 CLEANUP =                    args.cleanup
 INTERVAL_BETWEEN_STATS =     args.stats_interval
 
 # Constant
-SYS_MAXINT = sys.maxint
+bulk_time_record = []
 
 metrics_pool_dict = {
         'long_metrics':    [],
@@ -125,9 +127,6 @@ metrics_pool_dict = {
         'boolean_metrics': []
         }
 
-
-indices = []
-
 types = ["long_metrics",
          "integer_metrics",
          "short_metrics",
@@ -136,8 +135,11 @@ types = ["long_metrics",
          "float_metrics",
          "boolean_metrics"]
 
-es = None # Will hold the elasticsearch session
-es_indices = None # elasticsearch.client import IndicesClient
+index_names = []
+
+
+es = None  # Will hold the elasticsearch session
+es_indices = None  # elasticsearch.client import IndicesClient
 
 settings_body = {"settings":
                      {
@@ -211,30 +213,29 @@ def put_mapping():
 
 def print_mapping():
     # Retrieve mapping definition of index or index/type.
-    print json.dumps(es_indices.get_mapping(index=["metrics_0", "metrics_1"],doc_type=types),
+    print json.dumps(es_indices.get_mapping(index=["metrics_0", "metrics_1"], doc_type=types),
                      sort_keys=True, indent=4, separators=(',', ': '))
 
-def bulk_metrics_worker():
+def bulk_metrics_worker(client_id):
     # Running until timeout
     while not has_timeout():
-
-        cur_bulk  =""
-
-        # Iterate over the bulk size
-        for _ in range(NUMBER_OF_METRICS_PER_BULK):
-            #Randomly pick a type
-            type_name = choice(types)
-            # Generate the bulk operation, here {0} means the 0-th argument
-            cur_bulk += "{0}\n".format(json.dumps({"index": {"_index": choice(indices), "_type": type_name}}))
-            cur_bulk += "{0}\n".format(json.dumps(  choice(metrics_pool_dict[type_name]))  )
+        a_bulk = choice(es_metrics_generator.bulks_pool)
+        bulk_str = a_bulk[0]
+        bulk_size = a_bulk[1]
 
         try:
-            # Perform the bulk operation !!!!!!!!!!!!!!!!!!
-            es.bulk(body=cur_bulk)
+            bulk_start_time = time.time()
+
+            # Perform the bulk operation !
+            es.bulk(body=bulk_str)
+
+            print("Client_"+client_id),
+            print("Bulk execution time:  %s  seconds \n" % (time.time() - bulk_start_time))
+
             # Adding to success bulks
             increment_success()
             # Adding to size (in bytes)
-            increment_size(sys.getsizeof(str(cur_bulk)))
+            increment_size(bulk_size)
 
         except Exception as e:
             # Failed. incrementing failure
@@ -242,12 +243,14 @@ def bulk_metrics_worker():
             print(e.message)
             traceback.print_exc()
 
+
 def generate_clients(num_of_clients):
     # Clients placeholder
     list_clients = []
     # Iterate over the clients count
-    for _ in range(num_of_clients):
-        a_client_thread = Thread(target=bulk_metrics_worker)
+    for i in range(num_of_clients):
+        client_id = str(i)
+        a_client_thread = Thread(target=bulk_metrics_worker, args=(client_id,))
         a_client_thread.daemon = True
         # Create a thread and push it to the list
         list_clients.append(a_client_thread)
@@ -256,7 +259,7 @@ def generate_clients(num_of_clients):
     return list_clients
 
 
-def generate_indices():
+def generate_index_names():
     # Placeholder
     list_indices = []
     # Iterate over the indices count
@@ -266,6 +269,14 @@ def generate_indices():
         # Push it to the list
         list_indices.append(index_name)
 
+    # Return the indices
+    return list_indices
+
+
+def create_indices():
+
+    # Iterate over the indices count
+    for index_name in index_names:
         try:
             # And create it in ES with the shard count and replicas
             es.indices.create(index=index_name, body=settings_body)
@@ -274,39 +285,38 @@ def generate_indices():
             print("Could not create index. Is your cluster ok?")
             sys.exit(1)
 
-    # Return the indices
-    return list_indices
-
-
 def cleanup_indices():
     # Iterate over all indices and delete those
-    for cur_index in indices:
+    for index_name in index_names:
         try:
             # Delete the index
-            es.indices.delete(index=cur_index, ignore=[400, 404])
+            es.indices.delete(index=index_name, ignore=[400, 404])
 
         except:
-            print("Could not delete index: {0}. Continue anyway..".format(cur_index))
+            print("Could not delete index: {0}. Continue anyway..".format(index_name))
 
 
 def check_paras():
     global MIN_NUM_OF_CLIENTS
     global MAX_NUM_OF_CLIENTS
     global RUNNING_SECONDS
+    global NUMBER_OF_METRICS_PER_BATCH
     if MIN_NUM_OF_CLIENTS < 0:
         MIN_NUM_OF_CLIENTS = 1
     if MAX_NUM_OF_CLIENTS < 0 or MAX_NUM_OF_CLIENTS < 1:
         MAX_NUM_OF_CLIENTS = MIN_NUM_OF_CLIENTS + 1
     if RUNNING_SECONDS < 0:
         RUNNING_SECONDS = 60
+    if NUMBER_OF_METRICS_PER_BATCH > 100000000:  # limited, can not bigger than 100000000, 8 zeros
+        NUMBER_OF_METRICS_PER_BATCH = 60000
 
 
 def test_case_of_n_clients(num_of_clients):
     # Define the globals
-    global indices
+    global index_names
     global es
     global es_indices
-    global metrics_pool_dict
+
     try:
         # Initiate the elasticsearch session using ES low-level client.
         # By default nodes are randomized before passed into the pool and round-robin strategy is used for load balancing.
@@ -321,25 +331,43 @@ def test_case_of_n_clients(num_of_clients):
     cleanup_indices()
     print("Done!\n")
 
-    metrics_pool_dict = fill_metrics_pool(**metrics_pool_dict)
+    print("Generate a list of index names.. "),
+    index_names = generate_index_names()
+    print("Done!\n")
+
+    #  Init es_metrics_generator
+    #  after generate_index_names(),
+    #  before fill_metrics_pool() and fill_bulks_pool()
+    print("Init Es Metrics Generator.. "),
+    es_metrics_generator.init(NUMBER_OF_METRICS_PER_BATCH, index_names)
+    print("Done!\n")
+
+    print("Fill metrics pool.. "),
+    fill_metrics_pool()
+    print("Done!\n")
+
+    print("Fill bulks pool.. "),
+    fill_bulks_pool()
+    print("Done!\n")
 
     print("Generating  clients.. "),
     clients = generate_clients(num_of_clients)
     print("Done!\n")
 
-    print("Creating indices.. "),
-    indices = generate_indices()
+    print("Generating  indices.. "),
+    create_indices()
     print("Done!\n")
 
     put_mapping()
     # print_mapping()
 
     STARTED_TIMESTAMP = int(time.time())
-    benchmark_helper.init(STARTED_TIMESTAMP, RUNNING_SECONDS, INTERVAL_BETWEEN_STATS, NUMBER_OF_METRICS_PER_BULK)
+    es_benchmark_helper.init(STARTED_TIMESTAMP, RUNNING_SECONDS, INTERVAL_BETWEEN_STATS, NUMBER_OF_METRICS_PER_BATCH)
 
-    print("Starting the test. Will print stats every {0} seconds.".format(INTERVAL_BETWEEN_STATS))
-    print("The test would run for {0} seconds, but it might take a bit more "
-          "because we are waiting for current bulk operation to complete. \n".format(RUNNING_SECONDS))
+
+    print("Starting the test case. Print stats every {0} s.\n".format(INTERVAL_BETWEEN_STATS))
+    print("The test would run for {0} s\n".format(RUNNING_SECONDS))
+    print("Might take a bit longer, cause current bulk operation needs time to complete. \n")
 
     # Run the clients!
     map(lambda thread: thread.start(), clients)

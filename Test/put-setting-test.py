@@ -98,7 +98,7 @@ RUNNING_SECONDS   =          args.running_seconds
 NUMBER_OF_SHARDS =           args.number_of_shards
 NUMBER_OF_REPLICAS =         args.number_of_replicas
 REFRESH_INTERVAL   =         args.refresh_interval
-NUMBER_OF_METRICS_PER_BULK = args.number_of_metrics_per_bulk
+NUMBER_OF_METRICS_PER_BATCH = args.number_of_metrics_per_bulk
 CLEANUP =                    args.cleanup
 INTERVAL_BETWEEN_STATS =     args.stats_interval
 
@@ -109,10 +109,10 @@ STARTED_TIMESTAMP = 0
 
 
 # Placeholders
-success_bulks = 0
-failed_bulks  = 0
+success_batchs = 0
+failed_batchs  = 0
 total_size    = 0
-indices = []
+index_names = []
 types = ["long_metrics",
          "integer_metrics",
          "short_metrics",
@@ -161,7 +161,7 @@ def generate_indices():
 def cleanup_indices():
 
     # Iterate over all indices and delete those
-    for cur_index in indices:
+    for cur_index in index_names:
         try:
             # Delete the index
             es.indices.delete(index=cur_index, ignore=[400, 404])
@@ -175,7 +175,7 @@ def cleanup_indices():
 
 def main():
     # Define the globals
-    global indices
+    global index_names
     global STARTED_TIMESTAMP
     global es
     global es_indices

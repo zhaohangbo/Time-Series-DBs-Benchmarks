@@ -1,0 +1,36 @@
+------------------------------------
+Test case of clients number=1 is done! Final results:
+------------------------------------
+Clients number: 1  
+Elapsed time: 61 seconds 
+Successful bulks: 37 (37000 metrics 
+)Failed bulks: 0 (0 metrics 
+)Indexed approximately 2004 MBs in 61 secconds 
+54.16 MB/batch 
+32.85 MB/s 
+606.56 docs/s
+
+------------------------------------
+Test case of clients number=2 is done! Final results:
+------------------------------------
+Clients number: 2  
+Elapsed time: 61 seconds 
+Successful bulks: 81 (81000 metrics 
+)Failed bulks: 0 (0 metrics 
+)Indexed approximately 4388 MBs in 61 secconds 
+54.17 MB/batch 
+71.93 MB/s 
+1327.87 docs/s
+
+------------------------------------
+Test case of clients number=3 is done! Final results:
+------------------------------------
+Clients number: 3  
+Elapsed time: 60 seconds 
+Successful bulks: 126 (126000 metrics 
+)Failed bulks: 0 (0 metrics 
+)Indexed approximately 6827 MBs in 60 secconds 
+54.18 MB/batch 
+113.78 MB/s 
+2100.00 docs/s
+
