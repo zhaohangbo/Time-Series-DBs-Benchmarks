@@ -296,7 +296,7 @@ Step 2. Run multiple clients and do batch writes
 
 Step 3. Drop Database
 
-Step 4. View `report.txt` and find where `number of Failed bulks > 0`
+Step 4. View `report.txt` and find where `number of Failed batches > 0`
 
 ```
 ------------------------------------
