@@ -1,36 +1,132 @@
 ------------------------------------
-Test case of clients number=1 is done! Final results:
+Test case of clients number=10 is done! Final results:
 ------------------------------------
-Clients number: 1  
-Elapsed time: 61 seconds 
-Successful bulks: 37 (37000 metrics 
-)Failed bulks: 0 (0 metrics 
-)Indexed approximately 2004 MBs in 61 secconds 
-54.16 MB/batch 
-32.85 MB/s 
-606.56 docs/s
+Clients number: 10  
+Elapsed time: 72 seconds 
+Successful batches: 10 (50000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 7 MBs in 72 secconds 
+0.70 MB/batch 
+0.10 MB/s 
+694.44 metrics/s
 
 ------------------------------------
-Test case of clients number=2 is done! Final results:
+Test case of clients number=11 is done! Final results:
 ------------------------------------
-Clients number: 2  
-Elapsed time: 61 seconds 
-Successful bulks: 81 (81000 metrics 
-)Failed bulks: 0 (0 metrics 
-)Indexed approximately 4388 MBs in 61 secconds 
-54.17 MB/batch 
-71.93 MB/s 
-1327.87 docs/s
+Clients number: 11  
+Elapsed time: 75 seconds 
+Successful batches: 11 (55000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 7 MBs in 75 secconds 
+0.64 MB/batch 
+0.09 MB/s 
+733.33 metrics/s
 
 ------------------------------------
-Test case of clients number=3 is done! Final results:
+Test case of clients number=12 is done! Final results:
 ------------------------------------
-Clients number: 3  
-Elapsed time: 60 seconds 
-Successful bulks: 126 (126000 metrics 
-)Failed bulks: 0 (0 metrics 
-)Indexed approximately 6827 MBs in 60 secconds 
-54.18 MB/batch 
-113.78 MB/s 
-2100.00 docs/s
+Clients number: 12  
+Elapsed time: 83 seconds 
+Successful batches: 12 (60000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 8 MBs in 83 secconds 
+0.67 MB/batch 
+0.10 MB/s 
+722.89 metrics/s
+
+------------------------------------
+Test case of clients number=13 is done! Final results:
+------------------------------------
+Clients number: 13  
+Elapsed time: 93 seconds 
+Successful batches: 13 (65000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 9 MBs in 93 secconds 
+0.69 MB/batch 
+0.10 MB/s 
+698.92 metrics/s
+
+------------------------------------
+Test case of clients number=14 is done! Final results:
+------------------------------------
+Clients number: 14  
+Elapsed time: 96 seconds 
+Successful batches: 14 (70000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 10 MBs in 96 secconds 
+0.71 MB/batch 
+0.10 MB/s 
+729.17 metrics/s
+
+------------------------------------
+Test case of clients number=15 is done! Final results:
+------------------------------------
+Clients number: 15  
+Elapsed time: 105 seconds 
+Successful batches: 15 (75000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 10 MBs in 105 secconds 
+0.67 MB/batch 
+0.10 MB/s 
+714.29 metrics/s
+
+------------------------------------
+Test case of clients number=16 is done! Final results:
+------------------------------------
+Clients number: 16  
+Elapsed time: 113 seconds 
+Successful batches: 16 (80000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 11 MBs in 113 secconds 
+0.69 MB/batch 
+0.10 MB/s 
+707.96 metrics/s
+
+------------------------------------
+Test case of clients number=17 is done! Final results:
+------------------------------------
+Clients number: 17  
+Elapsed time: 118 seconds 
+Successful batches: 17 (85000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 12 MBs in 118 secconds 
+0.71 MB/batch 
+0.10 MB/s 
+720.34 metrics/s
+
+------------------------------------
+Test case of clients number=18 is done! Final results:
+------------------------------------
+Clients number: 18  
+Elapsed time: 126 seconds 
+Successful batches: 18 (90000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 12 MBs in 126 secconds 
+0.67 MB/batch 
+0.10 MB/s 
+714.29 metrics/s
+
+------------------------------------
+Test case of clients number=19 is done! Final results:
+------------------------------------
+Clients number: 19  
+Elapsed time: 131 seconds 
+Successful batches: 19 (95000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 13 MBs in 131 secconds 
+0.68 MB/batch 
+0.10 MB/s 
+725.19 metrics/s
+
+------------------------------------
+Test case of clients number=20 is done! Final results:
+------------------------------------
+Clients number: 20  
+Elapsed time: 141 seconds 
+Successful batches: 20 (100000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 14 MBs in 141 secconds 
+0.70 MB/batch 
+0.10 MB/s 
+709.22 metrics/s
 

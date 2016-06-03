@@ -81,7 +81,7 @@ Run `./influx_singlenode_benchmark.py -h` to see all the `Optional Parameters`:
 | --- | --- |
 | `--host`       | Hostname influxdb http API (default, localhost) |
 | `--port`       | Port influxdb http API (default 8086) |
-| `--batch_size` | Number of metrics per batch, limited ,can not be too big |
+| `--batch_size` | Number of metrics per batch, default 5000, limited ,can not be too big |
 | `--min_num_of_clients` | The minimum number of threads that send bulks to ES(threads num will range from min_client_num to max_client_num) |
 | `--max_num_of_clients` | The maximum number of threads that send bulks to ES(threads num will range from min_client_num to max_client_num) |
 | `--running_seconds`    | How long should the test run. Note: it might take a bit longer, as sending of all bulks who's creation has been initiated is allowed |

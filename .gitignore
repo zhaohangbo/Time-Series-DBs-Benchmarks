@@ -2,7 +2,7 @@
 
 *.pyc
 ElasticSearch/*.pyc
-ElasticSearch/report.txt
+#ElasticSearch/report.txt
 
 InfluxDB_v8/*.pyc
-InfluxDB_v8/report.txt
+#InfluxDB_v8/report.txt

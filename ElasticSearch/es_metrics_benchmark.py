@@ -363,7 +363,7 @@ def test_case_of_n_clients(num_of_clients):
 
     STARTED_TIMESTAMP = int(time.time())
     es_benchmark_helper.init(STARTED_TIMESTAMP, RUNNING_SECONDS, INTERVAL_BETWEEN_STATS, NUMBER_OF_METRICS_PER_BATCH)
-
+    print es_benchmark_helper.failed_bulks,es_benchmark_helper.success_bulks, es_benchmark_helper.total_size
 
     print("Starting the test case. Print stats every {0} s.\n".format(INTERVAL_BETWEEN_STATS))
     print("The test would run for {0} s\n".format(RUNNING_SECONDS))

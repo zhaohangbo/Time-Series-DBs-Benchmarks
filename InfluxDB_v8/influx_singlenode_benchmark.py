@@ -26,8 +26,8 @@ def parse_args():
                         help='Hostname influxdb http API, default localhost')
     parser.add_argument('--port', type=int, required=False, default=8086,
                         help='Port influxdb http API, default 8086')
-    parser.add_argument('--batch_size', type=int, required=False, default=1000,
-                        help='Number of metrics per batch, limited, default 1000 ,can not bigger than 100000000')
+    parser.add_argument('--batch_size', type=int, required=False, default=5000,
+                        help='Number of metrics per batch, limited, default 5000 ,can not bigger than 100000000')
     parser.add_argument("--min_num_of_clients", type=int, required=False, default=1,
                         help="The minimum number of client threads")
     parser.add_argument("--max_num_of_clients", type=int, required=False, default=2,
@@ -203,7 +203,7 @@ def check_paras():
     if RUNNING_SECONDS < 0:
         RUNNING_SECONDS = 60
     if BATCH_SIZE > 100000000:  # 7 zeros
-        BATCH_SIZE = 100000
+        BATCH_SIZE = 5000
 
 def main():
     check_paras()

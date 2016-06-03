@@ -18,18 +18,24 @@ RUNNING_SECONDS = 0
 INTERVAL_BETWEEN_STATS = 0
 NUMBER_OF_METRICS_PER_BATCH = 0
 
-def init ( a_STARTED_TIMESTAMP, a_RUNNING_SECONDS, a_INTERVAL_BETWEEN_STATS, a_NUMBER_OF_METRICS_PER_BATCH):
+
+def init( a_STARTED_TIMESTAMP, a_RUNNING_SECONDS, a_INTERVAL_BETWEEN_STATS, a_NUMBER_OF_METRICS_PER_BATCH):
     global STARTED_TIMESTAMP
     global RUNNING_SECONDS
     global INTERVAL_BETWEEN_STATS
     global NUMBER_OF_METRICS_PER_BATCH
+    global success_batchs
+    global failed_batchs
+    global total_size
     STARTED_TIMESTAMP = a_STARTED_TIMESTAMP
     RUNNING_SECONDS = a_RUNNING_SECONDS
     INTERVAL_BETWEEN_STATS = a_INTERVAL_BETWEEN_STATS
     NUMBER_OF_METRICS_PER_BATCH = a_NUMBER_OF_METRICS_PER_BATCH
+    success_batchs = 0
+    failed_batchs = 0
+    total_size = 0
 
 # Helper functions
-
 def increment_success():
     # First, lock
     success_lock.acquire()
@@ -102,8 +108,8 @@ def print_stats(NUMBER_OF_CLIENTS, isFinal):
         print("----------------------------")
     print("Clients number: {0}".format(NUMBER_OF_CLIENTS))
     print("Elapsed time: {0} seconds".format(elapsed_time))
-    print("Successful bulks: {0} ({1} metrics)".format(success_batchs, (success_batchs * NUMBER_OF_METRICS_PER_BATCH)))
-    print("Failed bulks: {0} ({1} metrics)".format(failed_batchs, (failed_batchs * NUMBER_OF_METRICS_PER_BATCH)))
+    print("Successful batches: {0} ({1} metrics)".format(success_batchs, (success_batchs * NUMBER_OF_METRICS_PER_BATCH)))
+    print("Failed batches: {0} ({1} metrics)".format(failed_batchs, (failed_batchs * NUMBER_OF_METRICS_PER_BATCH)))
     print("Indexed approximately {0} MBs in {1} secconds".format(size_mb, elapsed_time))
     print("{0:.2f} MB/batch".format(mbs_per_batch))
     print("{0:.2f} MB/s".format(mbs_per_sec))
@@ -121,8 +127,8 @@ def print_stats(NUMBER_OF_CLIENTS, isFinal):
         report_file.write("------------------------------------\n")
         report_file.write("Clients number: {0}  \n".format(NUMBER_OF_CLIENTS))
         report_file.write("Elapsed time: {0} seconds \n".format(elapsed_time))
-        report_file.write("Successful bulks: {0} ({1} metrics \n".format(success_batchs, (success_batchs * NUMBER_OF_METRICS_PER_BATCH)))
-        report_file.write("Failed bulks: {0} ({1} metrics \n".format(failed_batchs, (failed_batchs * NUMBER_OF_METRICS_PER_BATCH)))
+        report_file.write("Successful batches: {0} ({1} metrics \n".format(success_batchs, (success_batchs * NUMBER_OF_METRICS_PER_BATCH)))
+        report_file.write("Failed batches: {0} ({1} metrics \n".format(failed_batchs, (failed_batchs * NUMBER_OF_METRICS_PER_BATCH)))
         report_file.write("Indexed approximately {0} MBs in {1} secconds \n".format(size_mb, elapsed_time))
         report_file.write("{0:.2f} MB/batch \n".format(mbs_per_batch))
         report_file.write("{0:.2f} MB/s \n".format(mbs_per_sec))

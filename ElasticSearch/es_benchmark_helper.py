@@ -18,18 +18,25 @@ RUNNING_SECONDS = 0
 INTERVAL_BETWEEN_STATS = 0
 NUMBER_OF_METRICS_PER_BULK = 0
 
-def init ( a_STARTED_TIMESTAMP, a_RUNNING_SECONDS, a_INTERVAL_BETWEEN_STATS, a_NUMBER_OF_METRICS_PER_BULK):
+
+def init( a_STARTED_TIMESTAMP, a_RUNNING_SECONDS, a_INTERVAL_BETWEEN_STATS, a_NUMBER_OF_METRICS_PER_BULK):
     global STARTED_TIMESTAMP
     global RUNNING_SECONDS
     global INTERVAL_BETWEEN_STATS
     global NUMBER_OF_METRICS_PER_BULK
+    global success_bulks
+    global failed_bulks
+    global total_size
     STARTED_TIMESTAMP = a_STARTED_TIMESTAMP
     RUNNING_SECONDS = a_RUNNING_SECONDS
     INTERVAL_BETWEEN_STATS = a_INTERVAL_BETWEEN_STATS
     NUMBER_OF_METRICS_PER_BULK = a_NUMBER_OF_METRICS_PER_BULK
+    success_bulks = 0
+    failed_bulks = 0
+    total_size = 0
+
 
 # Helper functions
-
 def increment_success():
     # First, lock
     success_lock.acquire()
