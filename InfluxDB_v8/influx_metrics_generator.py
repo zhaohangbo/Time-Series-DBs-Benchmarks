@@ -8,12 +8,12 @@ import sys
 # multiple points with the same timestamp and different values
 
 
-def get_batch(batch_size=1000, series_name="benchmark_series", client_tag="client_x"):
+def generate_batch(batch_size=1000, series_name="benchmark_series", client_tag="client_x"):
     now = datetime.datetime.today()
 
     series = []
     series_total_physical_size = 0
-    batch_str = ""
+
     for i in range(0, batch_size):
         past_date = now - datetime.timedelta(minutes=i)
         filed_value = random.randint(0, 200)
@@ -31,7 +31,7 @@ def get_batch(batch_size=1000, series_name="benchmark_series", client_tag="clien
                                ]
                     ]
                 }
-        batch_str += json.dumps(pointValues)
+        batch_str = json.dumps(pointValues)  # batch_str += json.dumps(pointValues) is wrong
         series_total_physical_size += sys.getsizeof(str(batch_str))
         series.append(pointValues)
     return series, series_total_physical_size

@@ -116,7 +116,7 @@ def generate_clients(num_of_clients):
 
         # Generate Batch of Metrics for a specific client
         client_id = str(i)
-        series, series_total_physical_size = influx_metrics_generator.get_batch(batch_size=BATCH_SIZE, series_name=series_name, client_tag=client_id)
+        series, series_total_physical_size = influx_metrics_generator.generate_batch(batch_size=BATCH_SIZE, series_name=series_name, client_tag=client_id)
         series_for_multi_clients[client_id] = series
         sizes_for_multi_clients[client_id] = series_total_physical_size
 
