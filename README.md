@@ -166,32 +166,65 @@ Then start increasing the concurrency of your bulk ingestion (multiple threads, 
 Step 7. View `report.txt` and find where `number of Failed bulks > 0`
 
 ```
-Clients number: 1
-Elapsed time: 62 seconds
-Successful bulks: 10 (600000 documents)
-Failed bulks: 0 (0 documents)
-Indexed approximately 77 MBs in 62 secconds
-7.70 MB/bulk
-1.24 MB/s
+------------------------------------
+Test case of clients number=21 is done! Final results:
+------------------------------------
+Clients number: 21  
+Elapsed time: 81 seconds 
+Successful bulks: 47 (2820000 documents 
+Failed bulks: 0 (0 documents 
+Indexed approximately 362 MBs in 81 secconds 
+7.70 MB/bulk 
+4.47 MB/s 
+34814.81 docs/s
 
-Clients number: 2
-Elapsed time: 31 seconds
-Successful bulks: 17 (1020000 documents)
-Failed bulks: 0 (0 documents)
-Indexed approximately 131 MBs in 31 secconds
-7.71 MB/bulk
-4.23 MB/s
+------------------------------------
+Test case of clients number=22 is done! Final results:
+------------------------------------
+Clients number: 22  
+Elapsed time: 85 seconds 
+Successful bulks: 50 (3000000 documents 
+Failed bulks: 0 (0 documents 
+Indexed approximately 385 MBs in 85 secconds 
+7.70 MB/bulk 
+4.53 MB/s 
+35294.12 docs/s
 
-----------------------------
-Test is done! Final results:
-----------------------------
-Clients number: 2
-Elapsed time: 67 seconds
-Successful bulks: 25 (1500000 documents)
-Failed bulks: 0 (0 documents)
-Indexed approximately 192 MBs in 67 secconds
-7.68 MB/bulk
-2.87 MB/s
+------------------------------------
+Test case of clients number=23 is done! Final results:
+------------------------------------
+Clients number: 23  
+Elapsed time: 83 seconds 
+Successful bulks: 57 (3420000 documents 
+Failed bulks: 0 (0 documents 
+Indexed approximately 439 MBs in 83 secconds 
+7.70 MB/bulk 
+5.29 MB/s 
+41204.82 docs/s
+
+------------------------------------
+Test case of clients number=24 is done! Final results:
+------------------------------------
+Clients number: 24  
+Elapsed time: 89 seconds 
+Successful bulks: 56 (3360000 documents 
+Failed bulks: 0 (0 documents 
+Indexed approximately 431 MBs in 89 secconds 
+7.70 MB/bulk 
+4.84 MB/s 
+37752.81 docs/s
+
+------------------------------------
+Test case of clients number=25 is done! Final results:
+------------------------------------
+Clients number: 25  
+Elapsed time: 92 seconds 
+Successful bulks: 46 (2760000 documents 
+Failed bulks: 13 (780000 documents 
+Indexed approximately 354 MBs in 92 secconds 
+7.70 MB/bulk 
+3.85 MB/s 
+30000.00 docs/s
 ```
 
 Step 8. Round-Robin
@@ -267,40 +300,40 @@ Step 4. View `report.txt` and find where `number of Failed bulks > 0`
 
 ```
 ------------------------------------
-Test case of clients number=1 is done! Final results:
+Test case of clients number=10 is done! Final results:
 ------------------------------------
-Clients number: 1  
-Elapsed time: 61 seconds 
-Successful bulks: 37 (37000 metrics )
-Failed bulks: 0 (0 metrics )
-Indexed approximately 2004 MBs in 61 secconds 
-54.16 MB/batch 
-32.85 MB/s 
-606.56 docs/s
+Clients number: 10  
+Elapsed time: 72 seconds 
+Successful batches: 10 (50000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 7 MBs in 72 secconds 
+0.70 MB/batch 
+0.10 MB/s 
+694.44 metrics/s
 
 ------------------------------------
-Test case of clients number=2 is done! Final results:
+Test case of clients number=11 is done! Final results:
 ------------------------------------
-Clients number: 2  
-Elapsed time: 61 seconds 
-Successful bulks: 81 (81000 metrics )
-Failed bulks: 0 (0 metrics )
-Indexed approximately 4388 MBs in 61 secconds 
-54.17 MB/batch 
-71.93 MB/s 
-1327.87 docs/s
+Clients number: 11  
+Elapsed time: 75 seconds 
+Successful batches: 11 (55000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 7 MBs in 75 secconds 
+0.64 MB/batch 
+0.09 MB/s 
+733.33 metrics/s
 
 ------------------------------------
-Test case of clients number=3 is done! Final results:
+Test case of clients number=12 is done! Final results:
 ------------------------------------
-Clients number: 3  
-Elapsed time: 60 seconds 
-Successful bulks: 126 (126000 metrics )
-Failed bulks: 0 (0 metrics )
-Indexed approximately 6827 MBs in 60 secconds 
-54.18 MB/batch 
-113.78 MB/s 
-2100.00 docs/s
+Clients number: 12  
+Elapsed time: 83 seconds 
+Successful batches: 12 (60000 metrics 
+Failed batches: 0 (0 metrics 
+Indexed approximately 8 MBs in 83 secconds 
+0.67 MB/batch 
+0.10 MB/s 
+722.89 metrics/s
 ```
 
 
