@@ -162,8 +162,8 @@ mappings_body = {
                       }
                     }
                 ],
-                "_all":            { "enabled": True},
-                "_source":         { "enabled": True},
+                "_all":            { "enabled": False},
+                "_source":         { "enabled": False},
                 "properties": {
                     "@timestamp":  { "type": "date",    "doc_values": True}
                 }
