@@ -77,7 +77,25 @@ types = ["long_metrics",
 ```
 
 Step 3. Put the mapping for each index with 7 metric typs
+
 ```
+"_source":{ "enabled": False},
+"_all":   { "enabled": False},
+
+The metrics use case is distinct from other time-based or logging use cases.
+in that there are many small documents which consist only of numbers, dates, or keywords. 
+
+There are no updates, no highlighting requests, 
+and the data ages quickly so there is no need to reindex. 
+
+Search requests typically use simple queries to filter the dataset by date or tags, 
+and the results are returned as aggregations.
+
+In this case, disabling the _source field will save space and reduce I/O. 
+It is also advisable to disable the _all field in the metrics case.
+[Reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-all-field.html)
+
+
 mappings_body = {
         "_default_": {
               "dynamic_templates": [
@@ -89,8 +107,8 @@ mappings_body = {
                       }
                     }
                 ],
-                "_all":            { "enabled": True},
-                "_source":         { "enabled": True},
+                "_all":            { "enabled": False},
+                "_source":         { "enabled": False},
                 "properties": {
                     "@timestamp":  { "type": "date",    "doc_values": True}
                 }
